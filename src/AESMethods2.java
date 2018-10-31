@@ -24,7 +24,7 @@ public class AESMethods2
         char[][] input = new char[4][4];
         char[][] output = new char[4][4];
 
-        int[][] matrix = new int[4][4];
+        byte[][] matrix = new byte[4][4];
         matrix[0][0] = 2;
         matrix[0][1] = 3;
         matrix[0][2] = 1;
@@ -46,7 +46,7 @@ public class AESMethods2
         matrix[3][3] = 2;
 
         int counter = 0;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) // place input text into 2d char array
         {
             for (int j = 0; j < 4; j++)
             {
@@ -55,13 +55,42 @@ public class AESMethods2
             }
         }
 
+        char[] r;
 
-
+        for (int col = 0; col < 4; col++)
+        {
+            r = mixColumn(input[col]);
+            for (int i = 0; i < 4; i++)
+            {
+                outtext = outtext + r[i];
+            }
+        }
         return outtext;
     }
 
     public String keySchedule(String key, int round)
     {
         return null;
+    }
+
+    private int multiply(int matrix, char input) // multiplies matrix number by text value
+    {
+        int original = input;
+        if (matrix == 1)
+            return input;
+        else if (matrix == 2)
+            return (input << 1);
+        else
+           return (input << 1) ^ original;
+    }
+
+    private char[] mixColumn(char[] input) // mixes an individual column
+    {
+        char[] r = new char[4];
+        r[0] = (char)(multiply(2, input[0]) ^ multiply(3, input[0]) ^ multiply(1, input[0]) ^ multiply(1, input[0]));
+        r[1] = (char)(multiply(1, input[1]) ^ multiply(2, input[1]) ^ multiply(3, input[1]) ^ multiply(1, input[1]));
+        r[2] = (char)(multiply(1, input[2]) ^ multiply(1, input[2]) ^ multiply(2, input[2]) ^ multiply(3, input[2]));
+        r[3] = (char)(multiply(3, input[3]) ^ multiply(1, input[3]) ^ multiply(1, input[3]) ^ multiply(2, input[3]));
+        return r;
     }
 }
