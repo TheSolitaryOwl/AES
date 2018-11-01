@@ -70,6 +70,18 @@ public class AESMethods2
 
     public String keySchedule(String key, int round)
     {
+        char[][] state = new char[4][4];
+        int index = 0;
+
+        for (int row = 0; row < 4; row++)
+        {
+            for (int col = 0; col < 4; col++)
+            {
+                state[col][row] = key.charAt(index);
+                index++;
+            }
+        }
+
         return null;
     }
 
